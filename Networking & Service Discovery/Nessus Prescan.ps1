@@ -1,4 +1,6 @@
 #Execute this script on the target standalone host to set the conditions for a Windows 10 Machine to get properly scanned
+#Sets conditions for remediation such as allowing .NET updates to install
+#**Creates some security issues, run Nessus Postscan.ps1 to harden the system once scanning is complete**
 
 #Set variable values
 $ScannerIP = 0.0.0.0
@@ -42,3 +44,4 @@ Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\
 
 #Set the Filter Administrator Token Policy
 Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\ -Name "FilterAdministratorToken" -Value 1
+
