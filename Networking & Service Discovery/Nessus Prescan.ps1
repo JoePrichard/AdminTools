@@ -1,9 +1,8 @@
 #Execute this script on the target standalone host to set the conditions for a Windows 10 Machine to get properly scanned
 
 #Set variable values
-
-#IP address of connected Nessus scanner
 $ScannerIP = 0.0.0.0
+$TargetIP = 0.0.0.0
 
 #Start Windows services
 Start-Service RasAuto
@@ -21,6 +20,10 @@ Set-Service RemoteAccess -StartupType Disabled
 
 #Windows Firewall Settings
 
+#Allow traffic from Nessus scanner
+New-NetFirewallRule -DisplayName "Nessus" -Direction Inbound -Profile Any -LocalAddress $TargetIP -RemoteAddress $ScannerIP
+New-NetFirewallRule -DisplayName "Nessus" -Direction Outbound -Profile Any -LocalAddress $TargetIP -RemoteAddress $ScannerIP
+
 #Allow inbound file and printer sharing. Check for key existence and create new if absent, this is necessary to avoid errors
 $Path = "Registry::HKLM\Software\Poicies\Microsoft\WindowsFirewall\StandardProfile\Services\FileAndPrint"
 $PathExists = (Test-Path $Path)
@@ -33,3 +36,9 @@ Else {
   Set-ItemProperty -Path $Path -Name "Enabled" -Value "1"
   Set-ItemProperty -Path $Path -Name "RemoteAddresses" -Value $ScannerIP
 }
+
+#Set the Local Account Token Filter Policy
+Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\ -Name "LocalAccountTokenFilterPolicy" -Value 1
+
+#Set the Filter Administrator Token Policy
+Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\ -Name "FilterAdministratorToken" -Value 1
