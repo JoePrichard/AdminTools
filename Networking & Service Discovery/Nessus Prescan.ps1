@@ -53,7 +53,7 @@ If ($PathExists) {
   Set-ItemProperty -Path $Path -Name "State" -Type Dword -Value "146432"
 }
 Else {
-  New-Item 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing" -Force
+  New-Item "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing" -Force
   Set-ItemProperty -Path $Path -Name "State" -Type Dword -Value "146432"
 }
 
