@@ -57,3 +57,26 @@ Else {
   Set-ItemProperty -Path $Path -Name "State" -Type Dword -Value "146432"
 }
 
+#Remediate the SSL 3.0 "Poodle" Vulnerability
+$Path = "Registry::HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client"
+$PathExists = (Test-Path $Path)
+If ($PathExists) {
+  Set-ItemProperty -Path $Path -Name "Enabled" -Value "0"
+  Set-ItemProperty -Path $Path -Name "DisabledByDefault" -Value "1"
+}
+Else {
+  New-Item $Path -Force
+  Set-ItemProperty -Path $Path -Name "Enabled" -Value "0"
+  Set-ItemProperty -Path $Path -Name "DisabledByDefault" -Value "1"
+}
+$Path = "Registry::HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server"
+$PathExists = (Test-Path $Path)
+If ($PathExists) {
+  Set-ItemProperty -Path $Path -Name "Enabled" -Value "0"
+  Set-ItemProperty -Path $Path -Name "DisabledByDefault" -Value "1"
+}
+Else {
+  New-Item $Path -Force
+  Set-ItemProperty -Path $Path -Name "Enabled" -Value "0"
+  Set-ItemProperty -Path $Path -Name "DisabledByDefault" -Value "1"
+}
