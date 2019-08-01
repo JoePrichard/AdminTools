@@ -46,3 +46,14 @@ Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\
 #Set the Filter Administrator Token Policy
 Set-ItemProperty -Path Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\ -Name "FilterAdministratorToken" -Value 1
 
+#Fix the issue with .NET installers not being trusted by Windows
+$Path = "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing"
+$PathExists = (Test-Path $Path)
+If ($PathExists) {
+  Set-ItemProperty -Path $Path -Name "State" -Type Dword -Value "146432"
+}
+Else {
+  New-Item 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing" -Force
+  Set-ItemProperty -Path $Path -Name "State" -Type Dword -Value "146432"
+}
+
