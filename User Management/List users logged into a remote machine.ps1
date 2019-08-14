@@ -3,3 +3,6 @@ Get-WMIObject -ComputerName ExampleHostName -Class Win32_ComputerSystem | Select
 
 $CIM method.
 Get-CIMInstance -ComputerName ExampleHostName -Class Win32_ComputerSystem | Select-Object UserName
+
+#The best method
+Query user /server:ExampleHostName
