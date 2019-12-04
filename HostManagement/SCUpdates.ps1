@@ -31,3 +31,14 @@ If ($UpdateName -like "All" -or $UpdateName -like "all")
   Foreach ($Computer in $ComputerName)
   {
   $Application = (Get-WmiObject -Namespace "root\ccm\clientSDK" -Class CCM_SoftwareUpdate -ComputerName $Computer |
+  Where-Object { $_.EvaluationState -like "$($AppEvalState)*" -and $_.Name -like "*$($UpdateName)*"})
+  
+  Invoke-WmiMethod -Class CCM_SoftwareUpdatesManager -Name InstallUpdates -ArgumentList (,$Application) -Namespace root\ccm\clientsdk -ComputerName $Computer
+  }
+  
+  }
+  }
+  end {}
+  }
+  
+  Invoke-UpdateInstall -ComputerName Examplename -UpdateName All
