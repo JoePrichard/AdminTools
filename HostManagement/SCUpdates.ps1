@@ -14,3 +14,20 @@ Begin
 }
 
 Process
+{
+If ($UpdateName -like "All" -or $UpdateName -like "all")
+{
+  Foreach ($computer in $ComputerName)
+  {
+  $Application = (Get-WmiObject -Namespace "root\ccm\clientSDK" -Class CCM_SoftwareUpdate -ComputerName $Computer |
+  Where-Object { $_.EvaluationState -like "*$($AppEvalState1)*"})
+  
+  Invoke-WmiMethod -Class CCM_SoftwareUpdatesManager -Name InstallUpdates -ArgumentList (,$Application) -Namespace root/ccm/clientsdk -ComputerName $Computer
+  }
+  }
+  Else
+  
+  {
+  Foreach ($Computer in $ComputerName)
+  {
+  $Application = (Get-WmiObject -Namespace "root\ccm\clientSDK" -Class CCM_SoftwareUpdate -ComputerName $Computer |
