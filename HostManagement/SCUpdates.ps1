@@ -1,4 +1,5 @@
 #Force a host to install available updates from SCCM Software Center
+#UpdateName field can specify a single update, many or all of them
 
 function Invoke-UpdateInstall
 {
