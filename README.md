@@ -1,2 +1,2 @@
 # AdminTools
-Powershell scripts for administrative tasks
+Primitive Powershell scripts for administrative tasks
